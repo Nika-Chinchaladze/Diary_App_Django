@@ -6,5 +6,12 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Hello Nika Chinchaladze</h1>
+    <div class="login-div">
+        <div><i class="bi bi-person-circle person-div"></i></div>
+        <form action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+    </div>
 {% endblock %}

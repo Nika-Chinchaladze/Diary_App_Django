@@ -1,0 +1,20 @@
+hr {
+    border-style: none;
+    border-bottom: 2px solid rgba(53, 52, 52, 0.767);
+    margin-top: 100px;
+}
+i {
+    color: green;
+    background-color: white;
+    font-size: 100px;
+    font-weight: bold;
+    display: inline-block;
+    position: relative;
+    left: 46%;
+    top: -95px;
+    z-index: 2;
+}
+.good-bye {
+    position: relative;
+    top: -60px;
+}
