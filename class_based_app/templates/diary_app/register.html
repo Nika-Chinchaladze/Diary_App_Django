@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'diary_app/css/authentication.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="register-div">
+        <div><i class="bi bi-person-circle person-div"></i></div>
+        <h3 class="text-center fw-bold">Registration</h3>
+        <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js_logic %}
+    <script src="{% static 'diary_app/js/register.js' %}"></script>
+{% endblock %}
