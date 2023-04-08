@@ -1,0 +1,122 @@
+body {
+    background-color: rgba(192, 192, 243, 0.76);;
+}
+
+.main-div {
+    box-sizing: border-box;
+    width: 90%;
+    height: 100vh;
+    margin:auto;
+    position: relative;
+}
+
+.background-div {
+    box-sizing: border-box;
+    width: 100%;
+    height: 200px;
+    margin-top: 40px;
+    border-radius: 10px;
+    background-image: url(../images/back.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.image-div {
+    box-sizing: border-box;
+    width: 150px;
+    height: 150px;
+    border: 2px solid white;
+    border-radius: 10px;
+    background-image: url(../images/chincho.png);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(175, 172, 172);
+    position: absolute;
+    top: 100px;
+    left: 20px;
+}
+
+.name-tag {
+    position: absolute;
+    top: 155px;
+    left: 185px;
+    color: white;
+}
+
+.link-div {
+    box-sizing: border-box;
+    margin-top: 13px;
+    padding-left: 180px; 
+}
+
+.link-div a {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+    width: 240px;
+    padding: 5px 0;
+    margin-right: 11px;
+    border: 1px solid rgba(18, 18, 184, 0.76);
+    border-radius: 30px;
+}
+
+.link-div a:hover {
+    background-color: rgba(18, 18, 184, 0.76);
+    color: white;
+}
+
+.link-div a:active {
+    position: relative;
+    top: 2px;
+}
+
+.diary-div {
+    box-sizing: border-box;
+    padding: 15px;
+    width: 30%;
+    height: 250px;
+    background-color: aliceblue;
+    border-radius: 15px;
+    position: relative;
+}
+.diary-div:hover {
+    transform: scale(1.1);
+    background-color: rgba(139, 124, 33, 0.856);
+    color: rgb(12, 12, 12);
+}
+
+.hold-link {
+    position: absolute;
+    bottom: 15px;
+}
+.update-link, .delete-link, .check-link {
+    color: white;
+    border-radius: 35px;
+    display: inline-block;
+    width: 90px;
+    padding: 3px;
+    text-align: center;
+    text-decoration: none;
+    margin: 0 8px;
+}
+.update-link {
+    background-color: rgb(47, 47, 160);
+}
+.delete-link {
+    background-color: rgb(163, 24, 24);
+}
+.check-link {
+    background-color: rgb(24, 92, 24);
+}
+.update-link:hover {
+    background-color: blue;
+}
+.delete-link:hover {
+    background-color: red;
+}
+.check-link:hover {
+    background-color: green;
+}

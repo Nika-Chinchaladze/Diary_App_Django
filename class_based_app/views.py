@@ -48,4 +48,7 @@ class RegisterView(SuccessMessageMixin, CreateView):
 
 
 def home_view(request):
-    return render(request, "diary_app/home.html")
+    notes = Diary.objects.all()
+    return render(request, "diary_app/home.html", {
+        "notes": notes[:3]
+    })

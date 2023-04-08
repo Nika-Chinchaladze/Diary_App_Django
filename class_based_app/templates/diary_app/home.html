@@ -6,5 +6,33 @@
 {% endblock %}
 
 {% block content %}
-    <h2>boom</h2>
+    <div class="main-div">
+        <div class="background-div" styles=""></div>
+        <div class="image-div"></div>
+        <h3 class="name-tag">Nika Chinchaladze</h3>
+        <!-- link div -->
+        <div class="link-div">
+            <a href="#"><i class="bi bi-person-bounding-box"></i> update profile image</a>
+            <a href="#">+ add Note</a>
+            <a href="#">All Notes</a>
+            <a href="#"><i class="bi bi-image"></i> update theme image</a>
+        </div>
+        <!-- favourite notes div -->
+        <h4 class="fw-bold mt-5">Top 3 Favouite Notes</h4>
+        <hr>
+        <div class="mt-4 mb-5 d-flex justify-content-between align-items-center">
+            {% for note in notes %}
+                <div class="diary-div">
+                    <p><strong>Title:</strong> {{ note.title }}</p>
+                    <p><strong>Created:</strong> {{ note.date_time }}</p>
+                    <p><strong>Author:</strong> {{ note.user.username }}</p>
+                    <h6 class="hold-link">
+                        <a class="check-link" href="#">check</a>
+                        <a class="update-link" href="#">update</a>
+                        <a class="delete-link" href="#">delete</a>
+                    </h6>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
