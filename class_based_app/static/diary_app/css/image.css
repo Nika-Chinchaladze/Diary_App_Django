@@ -1,0 +1,26 @@
+form {
+    width: 35%;
+    margin: auto;
+    text-align: left;
+}
+#id_image {
+    text-align: left;
+}
+#id_user {
+    width: 26%;
+    padding: 4px 0;
+}
+.update-button {
+    width: 100%;
+    padding: 5px 0;
+    border-radius: 35px;
+    background-color: rgb(6, 6, 104);
+    color: white;
+}
+.update-button:hover {
+    background-color: blue;
+}
+.update-button:active {
+    position: relative;
+    top: 2px;
+}

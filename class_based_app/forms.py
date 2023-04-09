@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+from .models import Diary, Image, Background
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -12,7 +14,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         max_length=150, required=True, 
         label="", 
-        widget=forms.PasswordInput(attrs={"placeholder": "username"})
+        widget=forms.PasswordInput(attrs={"placeholder": "password"})
         )
 
 
@@ -41,3 +43,45 @@ class RegistrationForm(UserCreationForm):
         self.fields["email"].widget.attrs["placeholder"] = "email"
         self.fields["password1"].widget.attrs["placeholder"] = "password 1"
         self.fields["password2"].widget.attrs["placeholder"] = "password 2"
+
+
+class DiaryModelForm(forms.ModelForm):
+    class Meta:
+        model = Diary
+        fields = ("title", "content", "user",)
+    
+    def __init__(self, *args, **kwargs):
+        super(DiaryModelForm, self).__init__(*args, **kwargs)
+
+        self.fields["title"].label = ""
+        self.fields["content"].label = ""
+        self.fields["user"].label = "Author"
+
+        self.fields["title"].widget.attrs["placeholder"] = "title"
+        self.fields["content"].widget.attrs["placeholder"] = "Diary Content"
+
+
+class ImageModelForm(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = ("image", "user",)
+    
+    def __init__(self, *args, **kwargs):
+        super(ImageModelForm, self).__init__(*args, **kwargs)
+
+        self.fields["image"].label = ""
+        self.fields["user"].label = ""
+
+
+
+class BackgroundModelForm(forms.ModelForm):
+    class Meta:
+        model = Background
+        fields = ("image", "user",)
+    
+    def __init__(self, *args, **kwargs):
+        super(BackgroundModelForm, self).__init__(*args, **kwargs)
+
+        self.fields["image"].label = ""
+        self.fields["user"].label = ""
+        

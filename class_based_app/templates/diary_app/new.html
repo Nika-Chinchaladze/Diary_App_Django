@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'diary_app/css/new.css' %}">
+{% endblock %}
+
+{% block content %}
+<h3 class="text-center fw-bold mt-4 mb-3">Add New Diary Note</h3>
+<form action="{% url 'new' %}" method="POST" class="text-center mb-5">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <input type="hidden" id="hidden_username" name="hidden_username" value="{{ user.id }}">
+    <button type="submit" class="add-button">Add Note</button>
+</form>
+{% endblock %}
+
+{% block js_logic %}
+    <script src="{% static 'diary_app/js/new.js' %}"></script>
+{% endblock %}

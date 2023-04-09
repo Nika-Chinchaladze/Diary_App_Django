@@ -16,7 +16,6 @@ body {
     height: 200px;
     margin-top: 40px;
     border-radius: 10px;
-    background-image: url(../images/back.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -28,7 +27,6 @@ body {
     height: 150px;
     border: 2px solid white;
     border-radius: 10px;
-    background-image: url(../images/chincho.png);
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -80,6 +78,7 @@ body {
     height: 250px;
     background-color: aliceblue;
     border-radius: 15px;
+    border: 2px solid wheat;
     position: relative;
 }
 .diary-div:hover {

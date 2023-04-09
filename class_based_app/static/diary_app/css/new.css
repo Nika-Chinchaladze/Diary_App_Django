@@ -1,0 +1,19 @@
+#id_title {
+    box-sizing: border-box;
+    width: 62%;
+    padding: 5px;
+}
+.add-button {
+    color: white;
+    background-color: rgb(13, 78, 13);
+    box-sizing: border-box;
+    padding: 5px 10%;
+    border-radius: 30px;
+}
+.add-button:hover {
+    background-color: green;
+}
+.add-button:active {
+    position: relative;
+    top: 2px;
+}

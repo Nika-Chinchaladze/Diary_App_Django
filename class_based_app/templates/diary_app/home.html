@@ -7,15 +7,25 @@
 
 {% block content %}
     <div class="main-div">
-        <div class="background-div" styles=""></div>
-        <div class="image-div"></div>
-        <h3 class="name-tag">Nika Chinchaladze</h3>
+        {% if background %}
+            <div class="background-div" style="background-image: url('media/{{ background.image }}');"></div>
+        {% else %}
+            <div class="background-div" style="background-image: url({% static 'diary_app/images/back.jpg' %});"></div>
+        {% endif %}
+        
+        {% if image %}
+            <div class="image-div" style="background-image: url('media/{{ image.image }}');"></div>
+        {% else %}
+            <div class="image-div" style="background-image: url({% static 'diary_app/images/user.jpg' %});"></div>
+        {% endif %}
+
+        <h3 class="name-tag">{{ user.first_name }} {{ user.last_name }}</h3>
         <!-- link div -->
         <div class="link-div">
-            <a href="#"><i class="bi bi-person-bounding-box"></i> update profile image</a>
-            <a href="#">+ add Note</a>
-            <a href="#">All Notes</a>
-            <a href="#"><i class="bi bi-image"></i> update theme image</a>
+            <a href="{% url 'user-image' %}"><i class="bi bi-person-bounding-box"></i> update profile image</a>
+            <a href="{% url 'new' %}">+ add Note</a>
+            <a href="#">see all Notes</a>
+            <a href="{% url 'background-image' %}"><i class="bi bi-image"></i> update theme image</a>
         </div>
         <!-- favourite notes div -->
         <h4 class="fw-bold mt-5">Top 3 Favouite Notes</h4>
