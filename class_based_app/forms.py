@@ -48,17 +48,19 @@ class RegistrationForm(UserCreationForm):
 class DiaryModelForm(forms.ModelForm):
     class Meta:
         model = Diary
-        fields = ("title", "content", "user",)
+        fields = ("title", "image_url", "content", "user",)
     
     def __init__(self, *args, **kwargs):
         super(DiaryModelForm, self).__init__(*args, **kwargs)
 
         self.fields["title"].label = ""
         self.fields["content"].label = ""
+        self.fields["image_url"].label = ""
         self.fields["user"].label = "Author"
 
         self.fields["title"].widget.attrs["placeholder"] = "title"
         self.fields["content"].widget.attrs["placeholder"] = "Diary Content"
+        self.fields["image_url"].widget.attrs["placeholder"] = "Image Link"
 
 
 class ImageModelForm(forms.ModelForm):

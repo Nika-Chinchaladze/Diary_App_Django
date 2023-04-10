@@ -1,0 +1,74 @@
+.outer-div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    text-align: center;
+}
+.diary-div {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 15px;
+    margin: 0 15px 50px;
+    width: 400px;
+    height: 350px;
+    background-color: aliceblue;
+    border-radius: 15px;
+    border: 2px solid rgba(121, 88, 26, 0.616);
+    text-align: left;
+    position: relative;
+}
+.diary-div:hover {
+    transform: scale(1.1);
+    background-color: rgba(97, 230, 168, 0.904);
+    color: rgb(12, 12, 12);
+}
+.note-image-div {
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 150px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: grey;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.hold-link {
+    width: 90%;
+    text-align: center;
+    position: absolute;
+    top: 70px;
+    opacity: 0.6;
+}
+.hold-link:hover {
+    opacity: 1;
+}
+
+.update-link, .delete-link, .check-link {
+    color: white;
+    border-radius: 50%;
+    display: inline-block;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    margin: 0 8px;
+}
+.update-link {
+    background-color: rgb(47, 47, 160);
+}
+.delete-link {
+    background-color: rgb(163, 24, 24);
+}
+.check-link {
+    background-color: rgb(24, 92, 24);
+}
+.update-link:hover {
+    background-color: blue;
+}
+.delete-link:hover {
+    background-color: red;
+}
+.check-link:hover {
+    background-color: green;
+}

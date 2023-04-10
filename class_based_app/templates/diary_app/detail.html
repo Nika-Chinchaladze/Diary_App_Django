@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'diary_app/css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="text-center mt-4 mb-4">{{ note.title|safe }}</h2>
+
+        {% if note.image_url %}
+            <div class="back-image-div" style="background-image: url('{{ note.image_url }}');"></div>
+        {% else %}
+            <div class="back-image-div" style="background-image: url({% static 'diary_app/images/diary.jpg' %});"></div>
+        {% endif %}
+        <p><strong>main content</strong></p>
+        <p class="content-tag">{{ note.content|safe }}</p>
+        <p class="mt-5"><strong>Last Update:</strong> {{ note.date_time }}</p>
+        <p class="mb-5"><strong>Author:</strong> {{ note.user.first_name }} {{ note.user.last_name }}</p>
+    </div>
+{% endblock %}

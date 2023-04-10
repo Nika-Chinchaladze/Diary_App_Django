@@ -74,29 +74,49 @@ body {
 .diary-div {
     box-sizing: border-box;
     padding: 15px;
+    margin: 0 1.5%;
+    margin-bottom: 100px;
     width: 30%;
-    height: 250px;
+    height: 350px;
     background-color: aliceblue;
     border-radius: 15px;
-    border: 2px solid wheat;
+    border: 2px solid rgba(121, 88, 26, 0.616);
     position: relative;
 }
 .diary-div:hover {
     transform: scale(1.1);
-    background-color: rgba(139, 124, 33, 0.856);
+    background-color: rgba(97, 230, 168, 0.904);
     color: rgb(12, 12, 12);
+}
+.note-image-div {
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 150px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: grey;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .hold-link {
+    width: 90%;
+    text-align: center;
     position: absolute;
-    bottom: 15px;
+    top: 70px;
+    opacity: 0.6;
 }
+.hold-link:hover {
+    opacity: 1;
+}
+
 .update-link, .delete-link, .check-link {
     color: white;
-    border-radius: 35px;
+    border-radius: 50%;
     display: inline-block;
-    width: 90px;
-    padding: 3px;
+    padding: 15px;
     text-align: center;
     text-decoration: none;
     margin: 0 8px;

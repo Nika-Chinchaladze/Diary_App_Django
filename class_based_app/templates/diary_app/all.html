@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'diary_app/css/all.css' %}">
+{% endblock css_styles %}
+
+{% block content %}
+    <h3 class="text-center fw-bold mt-5 mb-5">All Diary Notes</h3>
+    <div class="mt-4 mb-5 outer-div">
+        {% for note in notes %}
+            <div class="diary-div">
+
+                {% if note.image_url %}
+                    <div class="note-image-div" style="background-image: url('{{ note.image_url }}')"></div>
+                {% else %}
+                    <div class="note-image-div" style="background-image: url('{% static 'diary_app/images/diary.jpg' %}')"></div>
+                {% endif %}
+
+                <p><strong>Title:</strong> {{ note.title }}</p>
+                <p><strong>Date:</strong> {{ note.date_time }}</p>
+                <p><strong>Author:</strong> {{ note.user.username }}</p>
+                <h6 class="hold-link">
+                    <a class="check-link" href="{% url 'detail' note_id=note.id %}"><i class="bi bi-door-open-fill"></i></a>
+                    <a class="update-link" href="{% url 'update' note_id=note.id %}"><i class="bi bi-pencil-fill"></i></a>
+                    <a class="delete-link" href="{% url 'delete' note_id=note.id %}"><i class="bi bi-trash"></i></a>
+                </h6>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

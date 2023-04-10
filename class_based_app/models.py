@@ -8,10 +8,11 @@ class Diary(models.Model):
     title = models.CharField(max_length=200, unique=True)
     date_time = models.DateTimeField(auto_now=True)
     content = RichTextField(blank=True, null=True)
+    image_url = models.CharField(max_length=500, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.title} {self.date_time} {self.content} {self.user}"
+        return f"{self.title} {self.date_time} {self.content} {self.image_url} {self.user}"
     
     class Meta:
         verbose_name = "Diary"
