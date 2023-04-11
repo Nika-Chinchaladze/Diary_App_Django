@@ -21,9 +21,9 @@
                 <p><strong>Date:</strong> {{ note.date_time }}</p>
                 <p><strong>Author:</strong> {{ note.user.username }}</p>
                 <h6 class="hold-link">
-                    <a class="check-link" href="{% url 'detail' note_id=note.id %}"><i class="bi bi-door-open-fill"></i></a>
-                    <a class="update-link" href="{% url 'update' note_id=note.id %}"><i class="bi bi-pencil-fill"></i></a>
-                    <a class="delete-link" href="{% url 'delete' note_id=note.id %}"><i class="bi bi-trash"></i></a>
+                    <a class="check-link" href="{% url 'detail' pk=note.id %}"><i class="bi bi-door-open-fill"></i></a>
+                    <a class="update-link" href="{% url 'update' pk=note.id %}"><i class="bi bi-pencil-fill"></i></a>
+                    <a class="delete-link" href="{% url 'delete' pk=note.id %}"><i class="bi bi-trash"></i></a>
                 </h6>
             </div>
         {% endfor %}

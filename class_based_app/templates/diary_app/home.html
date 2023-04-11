@@ -25,7 +25,7 @@
             <a href="{% url 'user-image' %}"><i class="bi bi-person-bounding-box"></i> update profile image</a>
             <a href="{% url 'new' %}">+ add Note</a>
             <a href="{% url 'all' %}">see all Notes</a>
-            <a href="{% url 'background-image' %}"><i class="bi bi-image"></i> update theme image</a>
+            <a href="{% url 'back-image' %}"><i class="bi bi-image"></i> update theme image</a>
         </div>
         <!-- favourite notes div -->
         <h4 class="fw-bold mt-5">The Newest Diary Notes</h4>
@@ -44,9 +44,9 @@
                     <p><strong>Date:</strong> {{ note.date_time }}</p>
                     <p><strong>Author:</strong> {{ note.user.username }}</p>
                     <h6 class="hold-link">
-                        <a class="check-link" href="{% url 'detail' note_id=note.id %}"><i class="bi bi-door-open-fill"></i></a>
-                        <a class="update-link" href="{% url 'update' note_id=note.id %}"><i class="bi bi-pencil-fill"></i></a>
-                        <a class="delete-link" href="{% url 'delete' note_id=note.id %}"><i class="bi bi-trash"></i></a>
+                        <a class="check-link" href="{% url 'detail' pk=note.id %}"><i class="bi bi-door-open-fill"></i></a>
+                        <a class="update-link" href="{% url 'update' pk=note.id %}"><i class="bi bi-pencil-fill"></i></a>
+                        <a class="delete-link" href="{% url 'delete' pk=note.id %}"><i class="bi bi-trash"></i></a>
                     </h6>
                 </div>
             {% endfor %}

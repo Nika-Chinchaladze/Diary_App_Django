@@ -1,0 +1,16 @@
+{%extends "base.html" %}
+{% load static %}
+
+{%block content%}
+<div class="center">
+	<form method="POST" class="card">
+		{% csrf_token %}
+		<h3 class="text-center mt-5 mb-5">Delete Diary Note</h3>
+		<p class="text-center mb-4">Are you sure that you want to delete "{{ note.title }}"?</p>
+		<p class="form-buttons text-center mt-4">
+			<input type="submit" class="btn btn-primary me-3" value="Delete">
+			<a href="{% url 'home' %}" class="btn btn-danger ms-3">Cancel</a>
+		</p>
+	</form>
+</div>
+{%endblock content%}

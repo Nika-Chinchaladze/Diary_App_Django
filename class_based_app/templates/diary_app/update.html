@@ -7,15 +7,17 @@
 
 {% block content %}
     <h3 class="text-center fw-bold mt-4 mb-3">Update Diary Note</h3>
-    <form action="{% url 'update' note_id=note.id %}" method="POST" class="text-center mb-5">
+    <form method="POST" class="text-center mb-5" novalidate>
         {% csrf_token %}
         {{ form.media }}
         {{ form.as_p }}
-        <input type="hidden" id="hidden_username" name="hidden_username" value="{{ user.id }}">
-        <button type="submit" class="update-button"><i class="bi bi-pencil-fill"></i> update note</button>
+        <div class="form-buttons">
+            <input type="submit" value="Update" class="btn btn-primary me-3"/>
+            <a href="{% url 'home' %}" class="btn btn-danger ms-3">Cancel</a>
+        </div>
     </form>
 {% endblock %}
 
 {% block js_logic %}
-    <script src="{% static 'diary_app/js/new.js' %}"></script>
+    <script src="{% static 'diary_app/js/update.js' %}"></script>
 {% endblock js_logic %}

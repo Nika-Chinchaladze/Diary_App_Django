@@ -1,10 +1,11 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import View
-from django.views.generic.edit import CreateView
+from django.views.generic import View, DetailView, ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView, FormView
 from django.contrib.auth.models import User
 
 from .models import Diary, Image, Background
@@ -51,107 +52,84 @@ class RegisterView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy("login")
 
 
-def home_view(request):
-    current_user = request.user
-    notes = Diary.objects.filter(user=current_user).all().order_by("-date_time")
-    image = Image.objects.filter(user=current_user).first()
-    background = Background.objects.filter(user=current_user).first()
-    return render(request, "diary_app/home.html", {
-        "notes": notes[:3],
-        "user": current_user,
-        "image": image,
-        "background": background
-    })
+class HomeView(View):
+    def get(self, request):
+        current_user = request.user
+        notes = Diary.objects.filter(user=current_user).all().order_by("-date_time")
+        image = Image.objects.filter(user=current_user).first()
+        background = Background.objects.filter(user=current_user).first()
+        return render(request, "diary_app/home.html", {
+            "notes": notes[:3],
+            "user": current_user,
+            "image": image,
+            "background": background
+        })
 
 
-def add_note_view(request):
-    current_user = request.user
-    if request.method == "POST":
-        form = DiaryModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("home"))
-    form = DiaryModelForm()
-    return render(request, "diary_app/new.html", {
-        "form": form,
-        "user": current_user
-    })
+class AddNoteView(FormView):
+    template_name = "diary_app/new.html"
+    form_class = DiaryModelForm
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        form.save()
+        return super(AddNoteView, self).form_valid(form)
 
 
-def add_image_view(request):
-    current_user = request.user
-    if request.method == "POST":
-        form = ImageModelForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("home"))
-    form = ImageModelForm()
-    return render(request, "diary_app/user_image.html", {
-        "form": form,
-        "user": current_user
-    })
+class AddImageView(FormView):
+    template_name = "diary_app/user_image.html"
+    form_class = ImageModelForm
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        form.save()
+        return super(AddImageView, self).form_valid(form)
 
 
-def add_background_view(request):
-    current_user = request.user
-    if request.method == "POST":
-        form = BackgroundModelForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("home"))
-    form = BackgroundModelForm()
-    return render(request, "diary_app/background_image.html", {
-        "form": form,
-        "user": current_user
-    })
+class AddBackgroundView(FormView):
+    template_name = "diary_app/background_image.html"
+    form_class = BackgroundModelForm
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        form.save()
+        return super(AddBackgroundView, self).form_valid(form)
 
 
-def note_detail_view(request, note_id):
-    current_user = request.user
-    chosen_note = Diary.objects.get(id=note_id)
-    return render(request, "diary_app/detail.html", {
-        "note": chosen_note,
-        "user": current_user
-    })
+class NoteDetailView(DetailView):
+    model = Diary
+    template_name = "diary_app/detail.html"
+    context_object_name = "note"
 
 
-def note_all_view(request):
-    current_user = request.user
-    notes = Diary.objects.filter(user=current_user).all()
-    return render(request, "diary_app/all.html", {
-        "notes": notes,
-        "user": current_user
-    })
+class NoteListView(ListView):
+    model = Diary
+    template_name = "diary_app/all.html"
+    context_object_name = "notes"
+
+    def get_queryset(self):
+        result = super(NoteListView, self).get_queryset()
+        current_user = self.request.user
+        result = Diary.objects.filter(user=current_user).all().order_by("-date_time")
+        return result
 
 
-def note_update_view(request, note_id):
-    current_user = request.user
-    chosen_note = Diary.objects.get(id=note_id)
-    
-    if request.method == "POST":
-        form = DiaryModelForm(request.POST)
-        if form.is_valid():
-            chosen_note.title = form.cleaned_data["title"]
-            chosen_note.image_url = form.cleaned_data["image_url"]
-            chosen_note.content = form.cleaned_data["content"]
-            chosen_note.save()
-            return HttpResponseRedirect(reverse("home"))
+class NoteUpdateView(UpdateView):
+    model = Diary
+    fields = ["title", "image_url", "content"]
+    template_name = "diary_app/update.html"
+    success_url = reverse_lazy("home")
 
-    initial_data = {
-        "title": chosen_note.title,
-        "image_url": chosen_note.image_url,
-        "content": chosen_note.content,
-        "user": chosen_note.user
-    }
-    form = DiaryModelForm(initial=initial_data)
-    return render(request, "diary_app/update.html", {
-        "note": chosen_note,
-        "user": current_user,
-        "form": form
-    })
+    def form_valid(self, form):
+        return super(NoteUpdateView, self).form_valid(form)
 
 
-def note_delete_view(request, note_id):
-    chosen_note = Diary.objects.get(id=note_id)
-    chosen_note.delete()
-    return HttpResponseRedirect(reverse("home"))
+
+class NoteDeleteView(DeleteView):
+    model = Diary
+    template_name = "diary_app/diary_confirm_delete.html"
+    context_object_name = "note"
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        return super(NoteDeleteView, self).form_valid(form)
