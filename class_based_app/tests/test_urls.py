@@ -1,9 +1,6 @@
-from django.test import TestCase, SimpleTestCase
+from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-
-from . import views
-
-# Create your tests here.
+from class_based_app import views
 
 
 class TestUrls(SimpleTestCase):
@@ -50,4 +47,3 @@ class TestUrls(SimpleTestCase):
     def test_all_url_is_resolved(self):
         url = reverse("all")
         self.assertEqual(resolve(url).func.__name__, views.NoteListView.as_view().__name__)
-
