@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from class_based_app.models import Diary, Image, Background
 
@@ -54,3 +55,31 @@ class TestDiaryModel(TestCase):
         self.assertEqual(str(self.note), expected_object_name)
 
 
+
+class TestImageModel(TestCase):
+
+    def test_user_imagefield(self):
+        new_image = Image()
+        image_path = "media/images/nata.jpg"
+        new_image.image = SimpleUploadedFile(
+            name="tested_user.jpg", 
+            content=open(image_path, "rb").read(), 
+            content_type="image/jpeg"
+        )
+        new_image.save()
+        self.assertEqual(Image.objects.count(), 1)
+
+
+
+class TestBackgroundModel(TestCase):
+
+    def test_background_imagefield(self):
+        new_image = Background()
+        image_path = "media/images/sea.jpg"
+        new_image.image = SimpleUploadedFile(
+            name="tested_background.jpg",
+            content=open(image_path, "rb").read(),
+            content_type="images/jpeg"
+        )
+        new_image.save()
+        self.assertEqual(Background.objects.count(), 1)

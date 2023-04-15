@@ -8,7 +8,7 @@ from .models import Diary, Image, Background
 class LoginForm(forms.Form):
     username = forms.CharField(
         max_length=150, required=True, 
-        label="", 
+        label="",
         widget=forms.TextInput(attrs={"placeholder": "username"})
         )
     password = forms.CharField(
@@ -44,6 +44,23 @@ class RegistrationForm(UserCreationForm):
         self.fields["password1"].widget.attrs["placeholder"] = "password 1"
         self.fields["password2"].widget.attrs["placeholder"] = "password 2"
 
+        self.fields["first_name"].max_length = 150
+        self.fields["last_name"].max_length = 150
+        self.fields["username"].max_length = 150
+        self.fields["email"].max_length = 150
+        self.fields["password1"].max_length = 150
+        self.fields["password2"].max_length = 150
+    
+    def password_similarity(self):
+        password_1 = self.cleaned_data["password1"]
+        password_2 = self.cleaned_data["password2"]
+
+        if password_1 != password_2:
+            raise forms.ValidationError("Invalid Data")
+
+        return True
+
+
 
 class DiaryModelForm(forms.ModelForm):
     class Meta:
@@ -58,7 +75,7 @@ class DiaryModelForm(forms.ModelForm):
         self.fields["image_url"].label = ""
         self.fields["user"].label = "Author"
 
-        self.fields["title"].widget.attrs["placeholder"] = "title"
+        self.fields["title"].widget.attrs["placeholder"] = "Title"
         self.fields["content"].widget.attrs["placeholder"] = "Diary Content"
         self.fields["image_url"].widget.attrs["placeholder"] = "Image Link"
 
