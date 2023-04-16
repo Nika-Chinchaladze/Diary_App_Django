@@ -1,5 +1,6 @@
 from django.test import TestCase, SimpleTestCase
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from class_based_app.forms import LoginForm, RegistrationForm, DiaryModelForm, ImageModelForm, BackgroundModelForm
 
@@ -326,7 +327,63 @@ class TestImageModelForm(TestCase):
         expected_fields = ["image", "user"]
         self.assertEqual(form_fields, expected_fields)
     
+    # here we test, if form fields have desired label, that we are expecting.
+    def test_image_image_label(self):
+        my_field = self.form.fields["image"]
+        self.assertTrue(my_field.label is None or my_field.label == "")
     
+    def test_image_user_label(self):
+        my_field = self.form.fields["user"]
+        self.assertTrue(my_field.label is None or my_field.label == "")
+    
+    # here we test, form validation.
+    def test_image_upload_validation(self):
+        image_path = "media/images/nata.jpg"
+        data = {
+            "user": User.objects.create(username="chincho")
+        }
+        my_form = ImageModelForm(data, {"image": SimpleUploadedFile(
+            name="tested.jpg", 
+            content=open(image_path, "rb").read(), 
+            content_type="image/jpeg"
+            )}
+        )
+        self.assertTrue(my_form.is_valid())
 
 
+
+class TestBackgroundModelForm(TestCase):
+
+    def setUp(self):
+        self.form = BackgroundModelForm()
+
+    # here we test, if form has fields, that we are expecting.
+    def test_background_fields(self):
+        form_fields = list(self.form.fields)
+        expected_fields = ["image", "user"]
+        self.assertEqual(form_fields, expected_fields)
+
+    # here we test, if form fields have desired label, that we are expecting.
+    def test_background_image_label(self):
+        my_field = self.form.fields["image"]
+        self.assertTrue(my_field.label is None or my_field.label == "")
+    
+    def test_background_user_label(self):
+        my_field = self.form.fields["user"]
+        self.assertTrue(my_field.label is None or my_field.label == "")
+
+    # here we test, form validation.
+    def test_background_upload_validation(self):
+        image_path = "media/images/nata.jpg"
+        data = {
+            "user": User.objects.create(username="chincharito")
+        }
+        my_form = BackgroundModelForm(data, {
+            "image": SimpleUploadedFile(
+            name="tested.jpg",
+            content=open(image_path, "rb").read(),
+            content_type="images/jpeg"
+            )
+        })
+        self.assertTrue(my_form.is_valid())
 
