@@ -124,7 +124,6 @@ class NoteUpdateView(UpdateView):
         return super(NoteUpdateView, self).form_valid(form)
 
 
-
 class NoteDeleteView(DeleteView):
     model = Diary
     template_name = "diary_app/diary_confirm_delete.html"

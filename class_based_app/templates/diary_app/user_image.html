@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<h3 class="text-center fw-bold mt-5 mb-5">Update User Image</h3>
+<h3 class="text-center fw-bold mt-5 mb-5">Update Profile Image</h3>
 <form action="{% url 'user-image' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
