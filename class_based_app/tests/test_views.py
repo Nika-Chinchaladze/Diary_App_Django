@@ -6,15 +6,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from class_based_app.views import Diary, Image, Background
 
 
-class TestView(TestCase):
-    def setUp(self):
-        self.new = reverse("new")
-        self.user_image = reverse("user-image")
-        self.back_image = reverse("back-image")
-        self.update = reverse("update", kwargs={"pk": 1})
-        self.delete = reverse("delete", kwargs={"pk": 1})
-    
-
 
 class TestLoginView(TestCase):
     
@@ -44,7 +35,7 @@ class TestLoginView(TestCase):
             "username": "lazvi",
             "password": "12345678"
         }
-        response = self.client.post(reverse("login"), my_data)
+        response = self.client.post(self.login_url, my_data)
         self.assertRedirects(response, reverse("home"))
     
     # we test view, if invalid data is catched and redirected to login page again
@@ -53,11 +44,15 @@ class TestLoginView(TestCase):
             "username": "nika",
             "password": "chinchaladze"
         }
-        response = self.client.post(reverse("login"), my_data)
+        response = self.client.post(self.login_url, my_data)
         self.assertRedirects(response, self.login_url)
     
 
 class TestRegisterView(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user(username="lazvi", password="contact12@")
 
     def setUp(self):
         self.client = Client()
@@ -77,7 +72,35 @@ class TestRegisterView(TestCase):
     def test_register_view_template(self):
         response = self.client.get(self.register_url)
         self.assertEqual(response.status_code, 200)
+    
+    # we test view, if valid data is posted correctly
+    def test_register_view_post_valid_data(self):
+        my_data = {
+            "username": "chincharito",
+            "first_name": "nika",
+            "last_name": "chinchaladze",
+            "email": "chincho@gmail.com",
+            "password1": "contact12@",
+            "password2": "contact12@"
+        }
+        response = self.client.post(self.register_url, my_data)
+        self.assertRedirects(response, reverse("login"))
+        self.assertEqual(User.objects.count(), 2)
 
+    # we test view, if invalid data is catched and redirected to register page again
+    def test_register_view_post_invalid_data(self):
+        my_data = {
+            "username": "lazvi",
+            "first_name": "nika",
+            "last_name": "chinchaladze",
+            "email": "chincho@gmail.com",
+            "password1": "contact12@",
+            "password2": "contact12@"
+        }
+        response = self.client.post(self.register_url, my_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "diary_app/register.html")
+        self.assertEqual(User.objects.count(), 1)
 
 class TestHomeView(TestCase):
 
@@ -379,7 +402,7 @@ class TestAddNoteView(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        User.objects.create_user(username="chincho", password="12345678")
+        User.objects.create_user(username="chincho", password="contact12@")
 
     def setUp(self):
         self.client = Client()
@@ -387,19 +410,19 @@ class TestAddNoteView(TestCase):
     
     # we test view's url, if view exists at desired location
     def test_new_view_desired_location(self):
-        self.client.login(username="chincho", password="12345678")
+        self.client.login(username="chincho", password="contact12@")
         response = self.client.get("/new")
         self.assertEqual(response.status_code, 200)
 
     # we test view, if it is accessible by name
     def test_new_view_by_name(self):
-        self.client.login(username="chincho", password="12345678")
+        self.client.login(username="chincho", password="contact12@")
         response = self.client.get(self.new_url)
         self.assertEqual(response.status_code, 200)
 
     # we test view, if it uses correct template
     def test_new_view_used_template(self):
-        self.client.login(username="chincho", password="12345678")
+        self.client.login(username="chincho", password="contact12@")
         response = self.client.get(self.new_url)
         self.assertTemplateUsed(response, "diary_app/new.html")
 
@@ -407,20 +430,181 @@ class TestAddNoteView(TestCase):
     def test_new_view_redirects_not_logged_in_user(self):
         response = self.client.get(self.new_url)
         self.assertRedirects(response, "/?next=/new")
-    
-    # we test, post valid data
-    def test_new_view_post_form(self):
-        self.client.login(username="chincho", password="12345678")
-        current_user = User.objects.filter(username="chincho").first()
-        my_data = {
-            "title": "famous peacky blinders",
-            "image_url": "https://www.youtube.com/1",
-            "content": "by order of the peacky blinders",
-            "user": current_user
-        }
-        response = self.client.post(self.new_url, data=my_data)
 
-        # check post results:
-        all_notes = Diary.objects.filter(user=current_user).count()
-        print(all_notes)
+
+
+class TestAddImageView(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user(username="chincho", password="contact12@")
+    
+    def setUp(self):
+        self.client = Client()
+        self.user_image_url = reverse("user-image")
+    
+    # we test view's url, if view exists at desired location
+    def test_user_image_view_desired_location(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get("/user-image")
+        self.assertEqual(response.status_code, 200)
+    
+    # we test view, if it is accessible by name
+    def test_user_image_view_by_name(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.user_image_url)
+        self.assertEqual(response.status_code, 200)
+    
+    # we test view, if it uses correct template
+    def test_user_image_used_template(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.user_image_url)
+        self.assertTemplateUsed(response, "diary_app/user_image.html")
+    
+    # we test, if view redirects to login page when user is not logged-in
+    def test_user_image_view_redirects_not_logged_in_user(self):
+        response = self.client.get(self.user_image_url)
+        self.assertRedirects(response, "/?next=/user-image")
+
+
+
+class TestAddBackgroundView(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user(username="chincho", password="contact12@")
+    
+    def setUp(self):
+        self.client = Client()
+        self.user_background_url = reverse("back-image")
+    
+    # we test view's url, if view exists at desired location
+    def test_user_background_view_desired_location(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get("/back-image")
+        self.assertEqual(response.status_code, 200)
+    
+    # we test view, if it is accessible by name
+    def test_user_background_view_by_name(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.user_background_url)
+        self.assertEqual(response.status_code, 200)
+    
+    # we test view, if it uses correct template
+    def test_user_background_used_template(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.user_background_url)
+        self.assertTemplateUsed(response, "diary_app/background_image.html")
+    
+    # we test, if view redirects to login page when user is not logged-in
+    def test_user_background_view_redirects_not_logged_in_user(self):
+        response = self.client.get(self.user_background_url)
+        self.assertRedirects(response, "/?next=/back-image")
+    
+    
+
+class TestNoteDeleteView(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        my_user = User.objects.create_user(username="chincho", password="contact12@")
+        Diary.objects.create(
+            title="first note",
+            image_url="https://www.youtube.com/first-note",
+            content="first note content",
+            user=my_user
+        )
+
+    def setUp(self):
+        self.client = Client()
+        self.delete_url = reverse("delete", kwargs={"pk": 1})
+    
+    # we test view's url, if view exists at desired location
+    def test_delete_view_desired_location(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get("/delete/1")
+        self.assertEqual(response.status_code, 200)
+    
+    # we test view, if it is accessible by name
+    def test_delete_view_by_name(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.delete_url)
+        self.assertEqual(response.status_code, 200)
+
+    # we test view, if it uses correct template
+    def test_delete_view_used_template(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.delete_url)
+        self.assertTemplateUsed(response, "diary_app/diary_confirm_delete.html")
+
+    # we test, if view redirects to login page when user is not logged-in
+    def test_delete_view_redirects_not_logged_in_user(self):
+        response = self.client.get(self.delete_url)
+        self.assertRedirects(response, "/?next=/delete/1")
+    
+    # we test, if view deletes chosen diary note
+    def test_delete_chosen_diary_note(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.delete_url, follow=True)
+
+        self.assertContains(response, "Are you sure that you want to delete")
+        post_response = self.client.post(self.delete_url, follow=True)
+        self.assertRedirects(post_response, reverse("home"), status_code=302)
+        self.assertEqual(Diary.objects.count(), 0)
+
+
+
+class TestNoteUpdateView(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        my_user = User.objects.create_user(username="chincho", password="contact12@")
+        Diary.objects.create(
+            title="rock climbing",
+            image_url="https://www.youtube.com/rock-climbing",
+            content="extreme rock climbing",
+            user=my_user
+        )
+    
+    def setUp(self):
+        self.client = Client()
+        self.update_url = reverse("update", kwargs={"pk": 1})
+    
+    # we test view's url, if view exists at desired location
+    def test_update_view_desired_location(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get("/update/1")
+        self.assertEqual(response.status_code, 200)
+
+    # we test view, if it is accessible by name
+    def test_update_view_by_name(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.update_url)
+        self.assertEqual(response.status_code, 200)  
+        
+    # we test view, if it uses correct template
+    def test_update_view_used_template(self):
+        self.client.login(username="chincho", password="contact12@")
+        response = self.client.get(self.update_url)
+        self.assertTemplateUsed(response, "diary_app/update.html")
+
+    # we test, if view redirects to login page when user is not logged-in
+    def test_update_view_redirects_not_logged_in_user(self):
+        response = self.client.get(self.update_url)
+        self.assertRedirects(response, "/?next=/update/1")
+    
+    # we test, if view updates chosen diary note
+    def test_update_chosen_diary_note(self):
+        self.client.login(username="chincho", password="contact12@")
+        self.client.get(self.update_url, follow=True)
+        current_user = User.objects.filter(username="chincho").first()
+        post_response = self.client.post(self.update_url, data={
+            "title": "car driving",
+            "image_url": "https://www.youtube.com/car-driving",
+            "content": "extreme rock climbing",
+            "user": current_user
+        }, follow=True)
+        self.assertRedirects(post_response, reverse("home"), status_code=302)
+        self.assertEqual(Diary.objects.get(id=1).title, "car driving")
+        self.assertEqual(Diary.objects.get(id=1).image_url, "https://www.youtube.com/car-driving")
 
