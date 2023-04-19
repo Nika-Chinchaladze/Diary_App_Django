@@ -1,12 +1,10 @@
 from django.shortcuts import render
-from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View, DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView, FormView
-from django.contrib.auth.models import User
 
 from .models import Diary, Image, Background
 from .forms import LoginForm, RegistrationForm, DiaryModelForm, ImageModelForm, BackgroundModelForm
